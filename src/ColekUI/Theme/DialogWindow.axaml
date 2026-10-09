@@ -1,0 +1,95 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:colek="https://github.com/RobbedColek/ColekUI">
+    <ControlTheme x:Key="{x:Type colek:DialogWindow}" TargetType="colek:DialogWindow">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="TransparencyBackgroundFallback" Value="{DynamicResource SystemControlBackgroundAltHighBrush}" />
+        <Setter Property="TopLevel.SystemBarColor" Value="{DynamicResource SystemControlBackgroundAltHighBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
+        <Setter Property="RequestedThemeVariant" Value="Dark" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
+                    <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
+                    <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
+                    <VisualLayerManager Name="PART_VisualLayerManager">
+                        <Panel>
+                            <Border Name="PART_Frame"
+                                    Background="{DynamicResource ColekUI.WindowBackgroundBrush}"
+                                    BorderBrush="{DynamicResource ColekUI.SelectedBorderBrush}"
+                                    BorderThickness="1"
+                                    ClipToBounds="True">
+                                <Panel Name="PART_BlurHost">
+                                    <Grid RowDefinitions="Auto,*,Auto"
+                                          Margin="20"
+                                          RowSpacing="10">
+                                        <StackPanel Grid.Row="0" Spacing="8">
+                                            <TextBlock Name="PART_Header"
+                                                       FontSize="24"
+                                                       FontWeight="SemiBold"
+                                                       Text="{TemplateBinding Header}"
+                                                       IsVisible="{TemplateBinding Header, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                            <TextBlock Name="PART_Description"
+                                                       TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource ColekUI.SecondaryTextBrush}"
+                                                       Text="{TemplateBinding Description}"
+                                                       IsVisible="{TemplateBinding Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                        </StackPanel>
+                                        <ContentPresenter Name="PART_ContentPresenter"
+                                                          Grid.Row="1"
+                                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                          Content="{TemplateBinding Content}"
+                                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                        <ItemsControl Name="PART_ButtonsPanel"
+                                                      Grid.Row="2"
+                                                      HorizontalAlignment="Right"
+                                                      ItemsSource="{TemplateBinding Buttons}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal" Spacing="8" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
+                                    </Grid>
+                                </Panel>
+                            </Border>
+                            <Panel Name="PART_ResizeGrips" IsVisible="{TemplateBinding CanResize}">
+                                <Border Tag="{x:Static WindowEdge.North}" Cursor="TopSide"
+                                        Height="6" Margin="12,0" VerticalAlignment="Top" Background="Transparent" />
+                                <Border Tag="{x:Static WindowEdge.South}" Cursor="BottomSide"
+                                        Height="6" Margin="12,0" VerticalAlignment="Bottom" Background="Transparent" />
+                                <Border Tag="{x:Static WindowEdge.West}" Cursor="LeftSide"
+                                        Width="6" Margin="0,12" HorizontalAlignment="Left" Background="Transparent" />
+                                <Border Tag="{x:Static WindowEdge.East}" Cursor="RightSide"
+                                        Width="6" Margin="0,12" HorizontalAlignment="Right" Background="Transparent" />
+                                <Border Tag="{x:Static WindowEdge.NorthWest}" Cursor="TopLeftCorner"
+                                        Width="12" Height="12" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                        Background="Transparent" />
+                                <Border Tag="{x:Static WindowEdge.NorthEast}" Cursor="TopRightCorner"
+                                        Width="12" Height="12" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                        Background="Transparent" />
+                                <Border Tag="{x:Static WindowEdge.SouthWest}" Cursor="BottomLeftCorner"
+                                        Width="12" Height="12" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                        Background="Transparent" />
+                                <Border Tag="{x:Static WindowEdge.SouthEast}" Cursor="BottomRightCorner"
+                                        Width="12" Height="12" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                        Background="Transparent" />
+                            </Panel>
+                        </Panel>
+                    </VisualLayerManager>
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:transparent /template/ Border#PART_Frame">
+            <Setter Property="CornerRadius" Value="12" />
+        </Style>
+        <Style Selector="^:nobuttons /template/ ItemsControl#PART_ButtonsPanel">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

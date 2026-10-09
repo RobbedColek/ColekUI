@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Yes" xml:space="preserve"><value>Tak</value></data>
+  <data name="No" xml:space="preserve"><value>Nie</value></data>
+  <data name="Ok" xml:space="preserve"><value>OK</value></data>
+  <data name="Cancel" xml:space="preserve"><value>Anuluj</value></data>
+  <data name="Minimize" xml:space="preserve"><value>Minimalizuj</value></data>
+  <data name="Maximize" xml:space="preserve"><value>Maksymalizuj</value></data>
+  <data name="Restore" xml:space="preserve"><value>Przywróć</value></data>
+  <data name="Close" xml:space="preserve"><value>Zamknij</value></data>
+</root>

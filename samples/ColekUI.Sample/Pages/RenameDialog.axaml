@@ -1,0 +1,14 @@
+<colek:DialogWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:colek="https://github.com/RobbedColek/ColekUI"
+                    x:Class="ColekUI.Sample.Pages.RenameDialog"
+                    Title="Rename"
+                    Header="Rename"
+                    Description="Type a new name. Cancelling asks for confirmation."
+                    Width="480">
+    <TextBox x:Name="NameBox" Text="Untitled" />
+    <colek:DialogWindow.Buttons>
+        <Button Content="Rename" MinWidth="90" Click="OnRename" />
+        <Button Content="Cancel" MinWidth="90" Click="OnCancel" />
+    </colek:DialogWindow.Buttons>
+</colek:DialogWindow>

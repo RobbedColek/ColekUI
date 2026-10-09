@@ -1,0 +1,22 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="ColekUI.WindowBackgroundBrush" Color="#FF0F0F0F" />
+    <SolidColorBrush x:Key="ColekUI.SurfaceBrush" Color="#FF101010" />
+    <SolidColorBrush x:Key="ColekUI.BorderBrush" Color="#FF242424" />
+    <SolidColorBrush x:Key="ColekUI.HoverBrush" Color="#FF1F1F1F" />
+    <SolidColorBrush x:Key="ColekUI.SelectedBrush" Color="#FF2A2A2A" />
+    <SolidColorBrush x:Key="ColekUI.SelectedBorderBrush" Color="#FF3A3A3A" />
+    <SolidColorBrush x:Key="ColekUI.SecondaryTextBrush" Color="#FFBDBDBD" />
+    <SolidColorBrush x:Key="ColekUI.CaptionTextBrush" Color="#FF9A9A9A" />
+    <SolidColorBrush x:Key="ColekUI.ErrorTextBrush" Color="#FFFF6B6B" />
+    <SolidColorBrush x:Key="ColekUI.AccentBrush" Color="#FF0078D4" />
+    <RadialGradientBrush x:Key="ColekUI.ContentBackgroundBrush"
+                         GradientOrigin="50%,0%"
+                         Center="50%,0%"
+                         RadiusX="100%"
+                         RadiusY="150%">
+        <GradientStop Offset="0" Color="#151934" />
+        <GradientStop Offset="0.45" Color="#050716" />
+        <GradientStop Offset="1" Color="#000000" />
+    </RadialGradientBrush>
+</ResourceDictionary>

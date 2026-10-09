@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="ColekUI.Sample.Pages.WindowsView">
+    <StackPanel Spacing="8" HorizontalAlignment="Left">
+        <TextBlock Text="Windows" FontSize="20" Margin="0,0,0,8" />
+        <TextBlock Text="Resize or move newly opened window, close it and open another one - it comes back where you left it."
+                   TextWrapping="Wrap" MaxWidth="480" HorizontalAlignment="Left" />
+        <Button Content="Open window" Click="OnOpenWindow" />
+        <TextBlock Text="Stored placement" FontWeight="SemiBold" Margin="0,8,0,0" />
+        <TextBlock Name="StoredText" Opacity="0.7" />
+        <TextBlock Text="Current window" FontWeight="SemiBold" Margin="0,8,0,0" />
+        <TextBlock Name="CurrentText" Opacity="0.7" />
+    </StackPanel>
+</UserControl>

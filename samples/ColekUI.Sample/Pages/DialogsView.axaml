@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="ColekUI.Sample.Pages.DialogsView">
+    <StackPanel Spacing="8" HorizontalAlignment="Left">
+        <TextBlock Text="Dialogs" FontSize="20" Margin="0,0,0,8" />
+        <Button Content="Confirm" Click="OnConfirm" />
+        <Button Content="Error" Click="OnError" />
+        <Button Content="Choice (3 options)" Click="OnChoose3" />
+        <Button Content="Choice (no options)" Click="OnChoose0" />
+        <Button Content="Custom dialog (opens a nested Confirm)" Click="OnCustom" />
+        <Button Content="File picker (wrapped in PushBlur)" Click="OnPickFile" />
+        <TextBlock x:Name="ResultText" Opacity="0.7" Margin="0,8,0,0" />
+    </StackPanel>
+</UserControl>

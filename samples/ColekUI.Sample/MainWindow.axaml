@@ -1,0 +1,10 @@
+<colek:ColekWindow xmlns="https://github.com/avaloniaui"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:colek="https://github.com/RobbedColek/ColekUI"
+                   x:Class="ColekUI.Sample.MainWindow"
+                   x:DataType="colek:INavigator"
+                   Title="ColekUI Sample"
+                   NavigationItems="{Binding Items}"
+                   FooterNavigationItems="{Binding FooterItems}"
+                   SelectedNavigationItem="{Binding SelectedItem, Mode=TwoWay}"
+                   Content="{Binding CurrentPage}" />

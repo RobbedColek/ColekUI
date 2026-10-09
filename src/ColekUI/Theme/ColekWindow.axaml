@@ -1,0 +1,143 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:colek="https://github.com/RobbedColek/ColekUI">
+    <ControlTheme x:Key="{x:Type colek:ColekWindow}" TargetType="colek:ColekWindow">
+        <Setter Property="Background" Value="{DynamicResource ColekUI.WindowBackgroundBrush}" />
+        <Setter Property="TransparencyBackgroundFallback" Value="{DynamicResource SystemControlBackgroundAltHighBrush}" />
+        <Setter Property="TopLevel.SystemBarColor" Value="{DynamicResource SystemControlBackgroundAltHighBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
+        <Setter Property="RequestedThemeVariant" Value="Dark" />
+        <Setter Property="WindowDecorations" Value="BorderOnly" />
+        <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
+        <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="40" />
+        <Setter Property="MinWidth" Value="640" />
+        <Setter Property="MinHeight" Value="400" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
+                    <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
+                    <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
+                    <VisualLayerManager Name="PART_VisualLayerManager">
+                        <Grid Name="PART_BlurHost" RowDefinitions="48,*">
+                            <Border Name="PART_TitleBar"
+                                    Grid.Row="0"
+                                    Height="48"
+                                    Background="{DynamicResource ColekUI.SurfaceBrush}">
+                                <Grid ColumnDefinitions="Auto,*,Auto"
+                                      VerticalAlignment="Center">
+                                    <TextBlock Grid.Column="0"
+                                               Margin="16,0,8,0"
+                                               VerticalAlignment="Center"
+                                               Foreground="White"
+                                               Text="{TemplateBinding Title}" />
+                                    <StackPanel Grid.Column="2"
+                                                Orientation="Horizontal"
+                                                Spacing="6"
+                                                Margin="0,0,8,0">
+                                        <Button Name="PART_MinimizeButton" Classes="windowbutton">
+                                            <colek:Codicon Data="{DynamicResource ColekUI.WindowButton.Minimize}" Width="12" Height="12" />
+                                        </Button>
+                                        <Button Name="PART_MaximizeButton" Classes="windowbutton">
+                                            <colek:Codicon Name="PART_MaximizeIcon" Width="12" Height="12" />
+                                        </Button>
+                                        <Button Name="PART_CloseButton" Classes="windowbutton">
+                                            <colek:Codicon Data="{DynamicResource ColekUI.WindowButton.Close}" Width="12" Height="12" />
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                            <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
+                                <Border Name="PART_Rail"
+                                        Grid.Column="0"
+                                        Width="48"
+                                        Background="{DynamicResource ColekUI.SurfaceBrush}">
+                                    <Border.Styles>
+                                        <Style Selector="ListBox">
+                                            <Setter Property="SelectionMode" Value="Single" />
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="BorderThickness" Value="0" />
+                                        </Style>
+                                        <Style Selector="ListBoxItem">
+                                            <Setter Property="Padding" Value="0" />
+                                            <Setter Property="Margin" Value="0,6" />
+                                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                                            <Setter Property="Height" Value="40" />
+                                            <Setter Property="CornerRadius" Value="10" />
+                                            <Setter Property="Background" Value="Transparent" />
+                                        </Style>
+                                        <Style Selector="ListBoxItem:pointerover">
+                                            <Setter Property="Background" Value="{DynamicResource ColekUI.HoverBrush}" />
+                                        </Style>
+                                        <Style Selector="ListBoxItem:selected">
+                                            <Setter Property="Background" Value="{DynamicResource ColekUI.SelectedBrush}" />
+                                        </Style>
+                                        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                                            <Setter Property="BorderBrush" Value="{DynamicResource ColekUI.SelectedBorderBrush}" />
+                                            <Setter Property="BorderThickness" Value="1" />
+                                            <Setter Property="CornerRadius" Value="10" />
+                                        </Style>
+                                    </Border.Styles>
+                                    <Border.DataTemplates>
+                                        <DataTemplate DataType="colek:NavigationItem" x:DataType="colek:NavigationItem">
+                                            <Panel ToolTip.Tip="{Binding ToolTip}">
+                                                <colek:NavigationIconPresenter Icon="{Binding Icon}" />
+                                            </Panel>
+                                        </DataTemplate>
+                                    </Border.DataTemplates>
+                                    <DockPanel Margin="4">
+                                        <ListBox Name="PART_FooterList"
+                                                 DockPanel.Dock="Bottom"
+                                                 Margin="0,6,0,0"
+                                                 ItemsSource="{TemplateBinding FooterNavigationItems}" />
+                                        <ListBox Name="PART_NavigationList"
+                                                 ItemsSource="{TemplateBinding NavigationItems}" />
+                                    </DockPanel>
+                                </Border>
+                                <Border Name="PART_ContentPanel"
+                                        Grid.Column="1"
+                                        ClipToBounds="True"
+                                        Background="{DynamicResource ColekUI.ContentBackgroundBrush}">
+                                    <ContentPresenter Name="PART_ContentPresenter"
+                                                      Margin="20"
+                                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                      Content="{TemplateBinding Content}"
+                                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </VisualLayerManager>
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^ /template/ Button.windowbutton">
+            <Setter Property="Width" Value="46" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+        <Style Selector="^ /template/ colek|Codicon#PART_MaximizeIcon">
+            <Setter Property="Data" Value="{DynamicResource ColekUI.WindowButton.Maximize}" />
+        </Style>
+        <Style Selector="^:maximized /template/ colek|Codicon#PART_MaximizeIcon">
+            <Setter Property="Data" Value="{DynamicResource ColekUI.WindowButton.Restore}" />
+        </Style>
+
+        <Style Selector="^ /template/ Border#PART_ContentPanel">
+            <Setter Property="CornerRadius" Value="16,0,0,0" />
+        </Style>
+        <Style Selector="^:norail /template/ Border#PART_Rail">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="^:norail /template/ Border#PART_ContentPanel">
+            <Setter Property="CornerRadius" Value="0" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>
