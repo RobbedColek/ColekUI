@@ -11,21 +11,24 @@ public sealed class WindowPlacementTracker
     private readonly Window _window;
     private readonly IWindowPlacementStore _store;
     private readonly string _windowKey;
+    private readonly bool _includeSize;
 
     private PixelPoint _startPosition;
     private Size _startSize;
 
-    private WindowPlacementTracker(Window window, IWindowPlacementStore store, string windowKey)
+    private WindowPlacementTracker(Window window, IWindowPlacementStore store, string windowKey, bool includeSize)
     {
         _window = window;
         _store = store;
         _windowKey = windowKey;
+        _includeSize = includeSize;
     }
 
     public static void Attach(
-        Window window, IWindowPlacementStore store, string windowKey, double defaultSizeRatio = 0.9, Size? defaultSize = null)
+        Window window, IWindowPlacementStore store, string windowKey, double defaultSizeRatio = 0.9, Size? defaultSize = null,
+        bool includeSize = true)
     {
-        WindowPlacementTracker tracker = new(window, store, windowKey);
+        WindowPlacementTracker tracker = new(window, store, windowKey, includeSize);
         tracker.ApplyInitialPlacement(defaultSizeRatio, defaultSize);
         tracker.StartTracking();
     }
@@ -80,6 +83,17 @@ public sealed class WindowPlacementTracker
         catch (Exception)
         {
             //
+        }
+
+        if (!_includeSize)
+        {
+            if (saved is not null && saved.ScreenLayout == DescribeScreens(screens))
+            {
+                _window.WindowStartupLocation = WindowStartupLocation.Manual;
+                _window.Position = _startPosition = new PixelPoint(saved.X, saved.Y);
+            }
+
+            return;
         }
 
         if (ComputeInitial(saved, screens, defaultSizeRatio, defaultSize) is not { } initial)

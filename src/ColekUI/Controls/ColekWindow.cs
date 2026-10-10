@@ -25,11 +25,12 @@ namespace ColekUI.Controls;
 [TemplatePart("PART_FooterList", typeof(ListBox))]
 [TemplatePart("PART_ContentPanel", typeof(Control))]
 [TemplatePart("PART_BlurHost", typeof(Control))]
-[PseudoClasses(NoRailPseudoClass, MaximizedPseudoClass)]
+[PseudoClasses(NoRailPseudoClass, MaximizedPseudoClass, FixedSizePseudoClass)]
 public class ColekWindow : Window, IBlurrable
 {
     private const string NoRailPseudoClass = ":norail";
     private const string MaximizedPseudoClass = ":maximized";
+    private const string FixedSizePseudoClass = ":fixedsize";
 
     public static readonly StyledProperty<IEnumerable<NavigationItem>?> NavigationItemsProperty =
         AvaloniaProperty.Register<ColekWindow, IEnumerable<NavigationItem>?>(nameof(NavigationItems));
@@ -59,6 +60,9 @@ public class ColekWindow : Window, IBlurrable
     public static readonly StyledProperty<Size?> DefaultSizeProperty =
         AvaloniaProperty.Register<ColekWindow, Size?>(nameof(DefaultSize));
 
+    public static readonly StyledProperty<bool> PlacementIncludesSizeProperty =
+        AvaloniaProperty.Register<ColekWindow, bool>(nameof(PlacementIncludesSize), true);
+
     private readonly BlurState _blur = new();
 
     private Control? _titleBar;
@@ -79,6 +83,7 @@ public class ColekWindow : Window, IBlurrable
         AddHandler(WindowOpenedEvent, (_, _) => TryAttachPlacement());
         UpdateRailVisibility();
         UpdateMaximizedState();
+        UpdateFixedSizeState();
     }
 
     public IEnumerable<NavigationItem>? NavigationItems
@@ -133,6 +138,12 @@ public class ColekWindow : Window, IBlurrable
     {
         get => GetValue(DefaultSizeProperty);
         set => SetValue(DefaultSizeProperty, value);
+    }
+
+    public bool PlacementIncludesSize
+    {
+        get => GetValue(PlacementIncludesSizeProperty);
+        set => SetValue(PlacementIncludesSizeProperty, value);
     }
 
     protected override Type StyleKeyOverride => typeof(ColekWindow);
@@ -208,6 +219,10 @@ public class ColekWindow : Window, IBlurrable
         {
             UpdateMaximizedState();
         }
+        else if (change.Property == CanResizeProperty)
+        {
+            UpdateFixedSizeState();
+        }
     }
 
     protected override void OnClosed(EventArgs e)
@@ -226,7 +241,11 @@ public class ColekWindow : Window, IBlurrable
             BeginMoveDrag(e);
     }
 
-    protected virtual void OnTitleBarDoubleTapped(object? sender, TappedEventArgs e) => ToggleMaximized();
+    protected virtual void OnTitleBarDoubleTapped(object? sender, TappedEventArgs e)
+    {
+        if (CanResize)
+            ToggleMaximized();
+    }
 
     protected virtual void OnMinimizeButtonClick(object? sender, RoutedEventArgs e) =>
         WindowState = WindowState.Minimized;
@@ -311,6 +330,8 @@ public class ColekWindow : Window, IBlurrable
         PseudoClasses.Set(MaximizedPseudoClass, maximized);
     }
 
+    private void UpdateFixedSizeState() => PseudoClasses.Set(FixedSizePseudoClass, !CanResize);
+
     private void AddToolTipHandler(Button? button)
     {
         if (button is null)
@@ -356,7 +377,7 @@ public class ColekWindow : Window, IBlurrable
         if (_placementAttached || PlacementKey is not { } key || PlacementStore is not { } store) return;
 
         _placementAttached = true;
-        WindowPlacementTracker.Attach(this, store, key, DefaultSizeRatio, DefaultSize);
+        WindowPlacementTracker.Attach(this, store, key, DefaultSizeRatio, DefaultSize, PlacementIncludesSize);
     }
 
     private static bool HasItems(IEnumerable<NavigationItem>? items) => items?.Any() == true;
