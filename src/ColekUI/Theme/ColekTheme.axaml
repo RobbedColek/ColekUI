@@ -4,6 +4,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="avares://ColekUI/Theme/Palette.axaml" />
+                <ResourceInclude Source="avares://ColekUI/Theme/DisabledControls.axaml" />
                 <ResourceInclude Source="avares://ColekUI/Theme/WindowButtonIcons.axaml" />
                 <ResourceInclude Source="avares://ColekUI/Theme/ColekWindow.axaml" />
                 <ResourceInclude Source="avares://ColekUI/Theme/DialogWindow.axaml" />
@@ -32,6 +33,10 @@
     <Style Selector=":is(TextBlock).dialog-message">
         <Setter Property="Foreground" Value="{DynamicResource ColekUI.SecondaryTextBrush}" />
         <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <Style Selector="TextBox:disabled">
+        <Setter Property="PlaceholderForeground" Value="{DynamicResource TextControlPlaceholderForegroundDisabled}" />
     </Style>
 
     <Style Selector="Button.action">
