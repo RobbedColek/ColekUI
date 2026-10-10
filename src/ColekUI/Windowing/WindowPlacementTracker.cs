@@ -22,10 +22,11 @@ public sealed class WindowPlacementTracker
         _windowKey = windowKey;
     }
 
-    public static void Attach(Window window, IWindowPlacementStore store, string windowKey, double defaultSizeRatio = 0.9)
+    public static void Attach(
+        Window window, IWindowPlacementStore store, string windowKey, double defaultSizeRatio = 0.9, Size? defaultSize = null)
     {
         WindowPlacementTracker tracker = new(window, store, windowKey);
-        tracker.ApplyInitialPlacement(defaultSizeRatio);
+        tracker.ApplyInitialPlacement(defaultSizeRatio, defaultSize);
         tracker.StartTracking();
     }
 
@@ -37,7 +38,7 @@ public sealed class WindowPlacementTracker
                 $"{s.Bounds.X},{s.Bounds.Y},{s.Bounds.Width},{s.Bounds.Height}@{s.Scaling:R}{(s.IsPrimary ? "*" : "")}")));
 
     internal static (PixelPoint Position, Size Size, bool Maximize)? ComputeInitial(
-        WindowPlacement? saved, IReadOnlyList<ScreenInfo> screens, double ratio)
+        WindowPlacement? saved, IReadOnlyList<ScreenInfo> screens, double ratio, Size? defaultSize = null)
     {
         if (screens.Count == 0 || !screens.Any(s => s.IsPrimary))
             return null;
@@ -48,8 +49,11 @@ public sealed class WindowPlacementTracker
         ScreenInfo primary = screens.First(s => s.IsPrimary);
         PixelRect workingArea = primary.WorkingArea;
 
-        double width = workingArea.Width / primary.Scaling * ratio;
-        double height = workingArea.Height / primary.Scaling * ratio;
+        double areaWidth = workingArea.Width / primary.Scaling;
+        double areaHeight = workingArea.Height / primary.Scaling;
+        (double width, double height) = defaultSize is { } size
+            ? (Math.Min(size.Width, areaWidth), Math.Min(size.Height, areaHeight))
+            : (areaWidth * ratio, areaHeight * ratio);
 
         return (
             new PixelPoint(
@@ -62,7 +66,7 @@ public sealed class WindowPlacementTracker
     private IReadOnlyList<ScreenInfo> ReadScreens() =>
         _window.Screens.All.Select(s => new ScreenInfo(s.Bounds, s.WorkingArea, s.Scaling, s.IsPrimary)).ToList();
 
-    private void ApplyInitialPlacement(double defaultSizeRatio)
+    private void ApplyInitialPlacement(double defaultSizeRatio, Size? defaultSize)
     {
         IReadOnlyList<ScreenInfo> screens = ReadScreens();
         if (screens.Count == 0 || !screens.Any(s => s.IsPrimary))
@@ -78,7 +82,7 @@ public sealed class WindowPlacementTracker
             //
         }
 
-        if (ComputeInitial(saved, screens, defaultSizeRatio) is not { } initial)
+        if (ComputeInitial(saved, screens, defaultSizeRatio, defaultSize) is not { } initial)
             return;
 
         ApplyBounds(initial.Position, initial.Size);

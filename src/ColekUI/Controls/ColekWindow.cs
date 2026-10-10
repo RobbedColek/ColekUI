@@ -56,6 +56,9 @@ public class ColekWindow : Window, IBlurrable
     public static readonly StyledProperty<double> DefaultSizeRatioProperty =
         AvaloniaProperty.Register<ColekWindow, double>(nameof(DefaultSizeRatio), 0.9);
 
+    public static readonly StyledProperty<Size?> DefaultSizeProperty =
+        AvaloniaProperty.Register<ColekWindow, Size?>(nameof(DefaultSize));
+
     private readonly BlurState _blur = new();
 
     private Control? _titleBar;
@@ -124,6 +127,12 @@ public class ColekWindow : Window, IBlurrable
     {
         get => GetValue(DefaultSizeRatioProperty);
         set => SetValue(DefaultSizeRatioProperty, value);
+    }
+
+    public Size? DefaultSize
+    {
+        get => GetValue(DefaultSizeProperty);
+        set => SetValue(DefaultSizeProperty, value);
     }
 
     protected override Type StyleKeyOverride => typeof(ColekWindow);
@@ -347,7 +356,7 @@ public class ColekWindow : Window, IBlurrable
         if (_placementAttached || PlacementKey is not { } key || PlacementStore is not { } store) return;
 
         _placementAttached = true;
-        WindowPlacementTracker.Attach(this, store, key, DefaultSizeRatio);
+        WindowPlacementTracker.Attach(this, store, key, DefaultSizeRatio, DefaultSize);
     }
 
     private static bool HasItems(IEnumerable<NavigationItem>? items) => items?.Any() == true;
