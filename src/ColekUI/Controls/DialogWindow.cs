@@ -3,6 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Threading;
+using Avalonia.VisualTree;
 using AvaloniaControls = Avalonia.Controls.Controls;
 
 namespace ColekUI.Controls;
@@ -103,6 +105,13 @@ public class DialogWindow : Window, IBlurrable
         BlurState.ApplyEffect(_blurHost, IsBlurred);
     }
 
+    protected override void OnOpened(EventArgs e)
+    {
+        base.OnOpened(e);
+
+        Dispatcher.UIThread.Post(FocusFirstEditableControl, DispatcherPriority.Loaded);
+    }
+
     protected override void OnKeyDown(KeyEventArgs e)
     {
         base.OnKeyDown(e);
@@ -142,6 +151,18 @@ public class DialogWindow : Window, IBlurrable
     {
         IsBlurred = _blur.IsBlurred;
         BlurState.ApplyEffect(_blurHost, IsBlurred);
+    }
+
+    private void FocusFirstEditableControl()
+    {
+        if (FocusManager?.GetFocusedElement() is TextBox)
+            return;
+
+        this.GetVisualDescendants()
+            .OfType<TextBox>()
+            .FirstOrDefault(textBox => !textBox.IsReadOnly && textBox.Focusable &&
+                                       textBox.IsEffectivelyEnabled && textBox.IsEffectivelyVisible)
+            ?.Focus(NavigationMethod.Tab);
     }
 
     private void UpdateButtonsState() => PseudoClasses.Set(NoButtonsPseudoClass, Buttons.Count == 0);
