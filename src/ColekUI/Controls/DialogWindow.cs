@@ -133,7 +133,7 @@ public class DialogWindow : Window, IBlurrable
 
     protected virtual void OnFramePointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed && !IsInInteractiveControl(e.Source))
             BeginMoveDrag(e);
     }
 
@@ -145,6 +145,17 @@ public class DialogWindow : Window, IBlurrable
             BeginResizeDrag(edge, e);
             e.Handled = true;
         }
+    }
+
+    private bool IsInInteractiveControl(object? source)
+    {
+        for (Visual? visual = source as Visual; visual is not null && visual != _frame; visual = visual.GetVisualParent())
+        {
+            if (visual is InputElement { Focusable: true })
+                return true;
+        }
+
+        return false;
     }
 
     private void OnBlurChanged()
